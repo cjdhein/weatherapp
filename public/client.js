@@ -1,6 +1,6 @@
 function loadCities() {
 
-	$.get('/test', function(data){
+	$.get('/log', function(data){
 		console.log('returned');
 		console.log(data);
 	});

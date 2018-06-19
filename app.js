@@ -3,7 +3,7 @@ var exphbs = require('express-handlebars');
 var path = require('path');
 var bodyParser = require('body-parser');
 
-var cities = require('./custom_modules/city.js');
+var dataman = require('./custom_modules/datamanager.js');
 
 var app = express();
 var hbs = exphbs.create({
@@ -16,18 +16,27 @@ app.set('view engine','handlebars');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req,res,next) => {
-	res.render('home');
-});
-
-app.get('/test', (req,res,next) => {
-	cities.updateList(function() {
-		res.send(cities.getWeather());
+	console.log("loading...");
+	dataman.getAll((error,success) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(success);
+			res.render('home',{'cities':success});
+		}
 	});
-	
 });
 
-app.get('/test2', (req,res,next) => {
-	cities.printList();
+app.get('/log', (req,res,next) => {
+	dataman.getAll((error,success) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(success);
+			res.send(success);
+		}
+	});
+
 });
 
 app.listen(3000, () => {

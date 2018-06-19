@@ -17,16 +17,16 @@ const ax = axios.create({
 
 module.exports.singleCity = function(cityID, callback) {
 	
-	var call = 'weather?id=' + cityID + apiKey;
+	var call = 'weather?id=' + cityID + '&units=imperial' + apiKey;
 	
 	//console.log('Calling ' + callUrl);
 
 	ax.get(call)
 	.then(function(response){
 		//console.log(JSON.stringify(response.data,null,2));
-		callback(response.data);
+		callback(null, response.data);
 	})
 	.catch(function(error){
-		console.log(error);
+		callback(new Error(error));
 	});
 }

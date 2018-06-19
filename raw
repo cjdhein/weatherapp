@@ -1,0 +1,116 @@
+[
+  {
+    "cityId": 5263045,
+    "cityName": "Milwaukee",
+    "weather": [
+      {
+        "id": 500,
+        "main": "Rain",
+        "description": "light rain",
+        "icon": "10d"
+      },
+	  {
+        "id": 803,
+        "main": "Clouds",
+        "description": "broken clouds",
+        "icon": "04d"
+      }
+    ],
+    "main": {
+      "temp": 289.5,
+      "pressure": 1016,
+      "humidity": 93,
+      "temp_min": 288.15,
+      "temp_max": 291.15
+    },
+    "visibility": 16093,
+    "wind": {
+      "speed": 5.7,
+      "deg": 10
+    },
+    "clouds": {
+      "all": 90
+    }
+  },
+  {
+    "cityId": 4275586,
+    "cityName": "Minneapolis",
+    "weather": [
+      {
+        "id": 803,
+        "main": "Clouds",
+        "description": "broken clouds",
+        "icon": "04d"
+      }
+    ],
+    "main": {
+      "temp": 302.64,
+      "pressure": 1014,
+      "humidity": 62,
+      "temp_min": 302.15,
+      "temp_max": 303.15
+    },
+    "visibility": 16093,
+    "wind": {
+      "speed": 5.1,
+      "deg": 220
+    },
+    "clouds": {
+      "all": 75
+    }
+  },
+  {
+    "cityId": 3582383,
+    "cityName": "Chicago",
+    "weather": [
+      {
+        "id": 801,
+        "main": "Clouds",
+        "description": "few clouds",
+        "icon": "02d"
+      }
+    ],
+    "main": {
+      "temp": 304.15,
+      "pressure": 1013,
+      "humidity": 70,
+      "temp_min": 304.15,
+      "temp_max": 304.15
+    },
+    "visibility": 10000,
+    "wind": {
+      "speed": 3.6,
+      "deg": 140
+    },
+    "clouds": {
+      "all": 20
+    }
+  },
+  {
+    "cityId": 4684888,
+    "cityName": "Dallas",
+    "weather": [
+      {
+        "id": 803,
+        "main": "Clouds",
+        "description": "broken clouds",
+        "icon": "04d"
+      }
+    ],
+    "main": {
+      "temp": 300.55,
+      "pressure": 1015,
+      "humidity": 65,
+      "temp_min": 300.15,
+      "temp_max": 301.15
+    },
+    "visibility": 16093,
+    "wind": {
+      "speed": 4.6,
+      "deg": 90
+    },
+    "clouds": {
+      "all": 75
+    }
+  }
+]

@@ -1,2 +1,16 @@
-<h1> Hello </h1>
-<div id='datadiv'></div>
+<div>
+	{{#if cities}}
+		{{#each cities}}
+			<h2>{{cityName}}</h2>
+			<p>temp: {{main.temp}}</p>
+			{{#each weather}}
+				<p><img src='http://openweathermap.org/img/w/{{icon}}.png'>{{description}}</p>
+			{{/each}}
+
+			<hr>
+		{{/each}}
+	{{else}}
+		<h2>Wat</h2>
+	{{/if}}
+</div>
+
