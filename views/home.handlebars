@@ -1,16 +1,63 @@
-<div>
+<div class="slds-grid slds-gutters slds-wrap slds-p-horizontal_large">
 	{{#if cities}}
 		{{#each cities}}
-			<h2>{{cityName}}</h2>
-			<p>temp: {{main.temp}}</p>
-			{{#each weather}}
-				<p><img src='http://openweathermap.org/img/w/{{icon}}.png'>{{description}}</p>
-			{{/each}}
-
-			<hr>
+			<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-p-vertical_medium">
+				<article class="slds-card">
+					<div class="slds-card__header slds-grid">
+						<header class="slds-media slds-media_center slds-has-flexi-truncate">
+							<div class="slds-media__figure">
+								<span class="slds-icon_container slds-icon-standard-account" title="city">
+									<svg class="slds-icon slds-icon_small" aria-hidden="true">
+										<use xlink:href="/assets/icons/standard-sprite/svg/symbols.svg#account"></use>
+									</svg>
+									<span class="slds-assistive-text">city</span>
+								</span>
+							</div>
+							<div class="slds-media__body">
+								<h1 class="slds-card__header-title">
+									<span class="slds-text-heading_medium">{{cityName}}</span>
+								</h1>
+							</div>
+							<div class="slds-no-flex">
+								<button class="slds-button slds-button_icon slds-button_icon-border-filled">
+									<svg class="slds-button__icon" aria-hidden="true">
+										<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/action-sprite/svg/symbols.svg#refresh"></use>
+									</svg>
+									<span class="slds-assistive-text">Refresh weather for {{cityName}}</span>
+								</button>
+							</div>
+						</header>
+					</div>
+					<div class="slds-card__body slds-card__body_inner">
+						<div class="slds-grid slds-wrap slds-gutters">
+							<div class="slds-col slds-size_1-of-1">
+								<h2 class="slds-card__header-title">
+									<span class="slds-text-heading_small"> Current Temperature: {{main.temp}}&#8457;</span> 
+								</h2> 
+							</div>
+							<div class="slds-col slds-size_1-of-1">
+								<h2 class="slds-card__header-title">
+									<span class="slds-text-heading_small"> Current Conditions:</span> 
+								</h2> 
+							</div>
+							{{#each weather}}
+								<div class="slds-col slds-size_1-of-6 slds-max-small-size_1-of-4 slds-m-vertical_x-small">
+									<article class="slds-card slds-card_boundary">
+										<div class="slds-card__body slds-card_body-inner">
+											<div class="slds-m-around_x-small slds-align_absolute-center">
+												<img src='http://openweathermap.org/img/w/{{icon}}.png' alt='{{description}}'>
+											</div>
+											<div class="slds-m-around_x-small slds-text-title_caps slds-text-align_center">{{description}}</div>
+										</div>
+									</article>
+								</div>
+							{{/each}}	
+						</div>
+					</div>	
+				</article>
+			</div>
 		{{/each}}
 	{{else}}
-		<h2>Wat</h2>
+		<h1>Wat</h1>
 	{{/if}}
 </div>
-
