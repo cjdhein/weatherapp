@@ -2,104 +2,89 @@
 var City = require('./city.js');
 var fs = require('fs');
 
-var mke = {};
-var mpls = {};
-var chi = {};
-var dal = {};
+/* Functions as a dictionary and holds all city objects as the value, under the cityId key */
+var cities = {};
+
+
 /* Create object for each pertinent city */
-fs.readFile('./raw','utf8',function(err,success){
+/*fs.readFile('./raw','utf8',function(err,success){
 	if (err) {
 		console.log(err);
 	} else {
 		success = JSON.parse(success);
-		mke = success[0];
-		mpls = success[1];
-		chi = success[2];
-		dal = success[3];
+		cities['5263045'] = success[0]; 
+		cities['4275586'] = success[1];
+		cities['3582383'] = success[2];
+		cities['4684888'] = success[3];
 	}
 });
-
-/*
-var mke = new City(5263045);
-var mpls = new City(4275586);
-var chi = new City(3582383);
-var dal = new City(4684888);
 */
+
+cities['5263045']= new City(5263045);
+//cities['4275586'] = new City(4275586);
+//cities['3582383']= new City(3582383);
+//cities['4684888']= new City(4684888);
+
 
 /* Triggers the updating of each city.
  * @param callback - a callback function that will return
  *			(err, success).
  */ 
-module.exports.updateAllWeather = (callback) => {
+module.exports.updateAll = (callback) => {
 
-	updateSingleWeather(mke.cityName, callback);
-	updateSingleWeather(mpls.cityName, callback);
-	updateSingleWeather(chi.cityName, callback);
-	updateSingleWeather(dal.cityName, callback);
-	mke.update(function(err,success){
-		if (err) {
-			callback(err);
-		} else {
-			callback(null,success);
-		}
-	});
-}
+	/* Will hold a response object for each call to updateSingle
+	 * goodUpdate - boolean value indicating of error occured
+	 * errMsg - string if there was an error, otherwise null
+	 */
+	var responses = [];
 
-module.exports.updateSingleWeather = (cityName, callback) => {
-
-	var toUpdate = null;
-	switch (cityName) {
-		case 'Milwaukee':
-			toUpdate = mke;
-			break;
-		case 'Minneapolis':
-			toUpdate = mpls;
-			break;
-		case 'Chicago':
-			toUpdate = chi;
-			break;
-		case 'Dallas':
-			toUpdate = dal;
-			break;
-		default:
-			callback("No city found.");
+	/* Call updateSingle for each city and append callbacks to responses */
+	for (var i = 0; i < cities.length; i++) {
+		updateSingle(cities[i],function(err,success){
+			if (err) {
+				// Error occurred for this city
+				response.append({goodUpdate : false, errMsg : err});
+			} else {
+				// Update was successful for this city
+				response.append({goodUpdate : success, errMsg : null});
+			}
+		});
 	}
+	
+	/* If there were errors in updating the cities, append error messages for single callback,
+	 * and set allGood = false */
+	var allGood = true;
 
-	toUpdate.updateWeather(function(err,success){
-		if (err) {
-			callback(err);
-		} else {
-			callback(null,success);
+	// hold appended error messages
+	var callbackError = null;
+
+	// check responses
+	for (var i = 0; i < responses.length; i++) {
+		if (!responses[i].goodUpdate){
+			callbackError += res.errMsg + '; ';		
 		}
-	});
+	}
+	
+	// if overall request was successful, send callback with success flag, otherwise send error
+	if (allGood) {
+		callback(null,true);
+	} else {
+		callback(callbackError);
+	}
+}
+
+module.exports.updateSingle = (cityId, callback) => {
+	return new Promise((resolve,reject) => {
+		cities[cityId].update().then(() => {
+				resolve(true);
+			}).catch(reject(err));
+		});
 
 }
 
-module.exports.getAllWeather = (callback) => {
-	var data = [mke,mpls,chi,dal];
+module.exports.getAll = (callback) => {
+	var data = cities;
 	callback(null,data);
-}
-
-module.exports.getSingleWeather= (cityName, callback) => {
-	var toReturn = null;
-	switch (cityName) {
-		case 'Milwaukee':
-			toReturn = mke;
-			break;
-		case 'Minneapolis':
-			toReturn = mpls;
-			break;
-		case 'Chicago':
-			toReturn = chi;
-			break;
-		case 'Dallas':
-			toReturn = dal;
-			break;
-		default:
-			callback("No city found.");
-	}
-
-	callback(null, toReturn);
 }
 
 module.exports.storeAll = (callback) => {

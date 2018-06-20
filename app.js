@@ -19,7 +19,7 @@ app.use(bodyParser.json());
 
 app.get('/', (req,res,next) => {
 	console.log("loading...");
-	dataman.getAllWeather((error,success) => {
+	dataman.getAll((error,success) => {
 		if (error) {
 			console.log(error);
 		} else {
@@ -30,44 +30,27 @@ app.get('/', (req,res,next) => {
 });
 
 app.get('/log', (req,res,next) => {
-	dataman.getAllWeather((error,success) => {
+	dataman.getAll((error,success) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log(success);
 			res.send(success);
 		}
 	});
 
 });
 
-app.post('/updateWeather', (req,res,next) => {
-	var toUpdate = req.body.city;
-	dataman.updateSingleWeather(city, (error,success) => {
+app.get('/refresh', (req,res,next) => {
+	var toUpdate = req.query.city;
+	console.log('Updating ' + toUpdate);
+	dataman.updateSingle(toUpdate, (error,success) => {
 		if (error) {
 			console.log(error);
 		} else {
-			console.log(success);
-			res.send(success);
+			res.redirect('/');
 		}
-	});
-});
 
-app.post('/getWeather', (req,res,next) => {
-	var toGet = req.body.city;
-	dataman.getSingleWeather(city, (error,success) => {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log(success);
-			res.send(success);
-		}
 	});
-});
-
-app.post('/updateForecast', (req,res,next) => {
-	var toUpdate = req.body.city;
-	//dataman.update
 });
 
 app.listen(3000, () => {

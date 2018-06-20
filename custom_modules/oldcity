@@ -1,6 +1,9 @@
  
 const Weatherman = require('./weatherman.js');
 
+const Promise = require('bluebird');
+Promise.promisifyAll(Weatherman);
+
 /**
 * @callback requestCallback
 * @param {function} error - null if request was successful, or an error if an error occurred.
@@ -44,25 +47,22 @@ class City {
 	 * @param {requestCallback} callback - response handler
 	 */
 	update(callback){
+		Weatherman.currentWeather(this.cityId, (error, currentResult)=>{
+			if (error) {
+				callback(error);
+			} else {
 
-		Weatherman.currentWeather(this.cityId).then((currentResult) => {
-			
-			this.cityName = currentResult.name;
-			this.weather = currentResult.weather;
-			this.main = currentResult.main;
-			this.visibility = currentResult.visibility;
-			this.wind = currentResult.wind;
-			this.clouds = currentResult.clouds;		
+				this.cityName = currentResult.name;
+				this.weather = currentResult.weather;
+				this.main = currentResult.main;
+				this.visibility = currentResult.visibility;
+				this.wind = currentResult.wind;
+				this.clouds = currentResult.clouds;		
 
-//			return Promise.resolve();
-
-		}).then(Weatherman.forecast(this.cityId)
-			.then((forecastResult) => {
-				this.forecast = forecastResult;
-
-		}))
-			.catch((error)=>console.log(error));
-	}	
+				callback(null,true);
+			}
+		});
+	}
 
 	/**
 	 * Print the city's weather data to the console. Used for debug / dev.
