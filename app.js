@@ -3,6 +3,7 @@ var exphbs = require('express-handlebars');
 var path = require('path');
 var bodyParser = require('body-parser');
 
+
 var dataman = require('./custom_modules/datamanager.js');
 
 var app = express();
@@ -14,10 +15,11 @@ app.engine('handlebars', hbs.engine);
 app.set('view engine','handlebars');
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json());
 
 app.get('/', (req,res,next) => {
 	console.log("loading...");
-	dataman.getAll((error,success) => {
+	dataman.getAllWeather((error,success) => {
 		if (error) {
 			console.log(error);
 		} else {
@@ -28,7 +30,7 @@ app.get('/', (req,res,next) => {
 });
 
 app.get('/log', (req,res,next) => {
-	dataman.getAll((error,success) => {
+	dataman.getAllWeather((error,success) => {
 		if (error) {
 			console.log(error);
 		} else {
@@ -37,6 +39,35 @@ app.get('/log', (req,res,next) => {
 		}
 	});
 
+});
+
+app.post('/updateWeather', (req,res,next) => {
+	var toUpdate = req.body.city;
+	dataman.updateSingleWeather(city, (error,success) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(success);
+			res.send(success);
+		}
+	});
+});
+
+app.post('/getWeather', (req,res,next) => {
+	var toGet = req.body.city;
+	dataman.getSingleWeather(city, (error,success) => {
+		if (error) {
+			console.log(error);
+		} else {
+			console.log(success);
+			res.send(success);
+		}
+	});
+});
+
+app.post('/updateForecast', (req,res,next) => {
+	var toUpdate = req.body.city;
+	//dataman.update
 });
 
 app.listen(3000, () => {

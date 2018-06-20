@@ -15,7 +15,8 @@ const ax = axios.create({
 	baseURL: url
 });
 
-module.exports.singleCity = function(cityID, callback) {
+
+module.exports.currentWeather = function(cityID, callback) {
 	
 	var call = 'weather?id=' + cityID + '&units=imperial' + apiKey;
 	
@@ -25,6 +26,19 @@ module.exports.singleCity = function(cityID, callback) {
 	.then(function(response){
 		//console.log(JSON.stringify(response.data,null,2));
 		callback(null, response.data);
+	})
+	.catch(function(error){
+		callback(new Error(error));
+	});
+}
+
+module.exports.forecast = function(cityID, callback) {
+
+	var call = 'forecast?id=' + cityID + '&units=imperial' + apiKey;
+
+	ax.get(call)
+	.then(function(response) {
+		callback(null,response.data);
 	})
 	.catch(function(error){
 		callback(new Error(error));

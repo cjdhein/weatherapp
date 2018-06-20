@@ -1,3 +1,5 @@
+
+
 function loadCities() {
 
 	$.get('/log', function(data){
@@ -8,4 +10,7 @@ function loadCities() {
 
 $(document).ready( function(){
 	loadCities();
+	/* Register event listeners for buttons */
+
+	
 });

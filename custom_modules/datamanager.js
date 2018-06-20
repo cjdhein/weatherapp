@@ -30,8 +30,12 @@ var dal = new City(4684888);
  * @param callback - a callback function that will return
  *			(err, success).
  */ 
-module.exports.updateAll = (callback) => {
+module.exports.updateAllWeather = (callback) => {
 
+	updateSingleWeather(mke.cityName, callback);
+	updateSingleWeather(mpls.cityName, callback);
+	updateSingleWeather(chi.cityName, callback);
+	updateSingleWeather(dal.cityName, callback);
 	mke.update(function(err,success){
 		if (err) {
 			callback(err);
@@ -41,9 +45,61 @@ module.exports.updateAll = (callback) => {
 	});
 }
 
-module.exports.getAll = (callback) => {
+module.exports.updateSingleWeather = (cityName, callback) => {
+
+	var toUpdate = null;
+	switch (cityName) {
+		case 'Milwaukee':
+			toUpdate = mke;
+			break;
+		case 'Minneapolis':
+			toUpdate = mpls;
+			break;
+		case 'Chicago':
+			toUpdate = chi;
+			break;
+		case 'Dallas':
+			toUpdate = dal;
+			break;
+		default:
+			callback("No city found.");
+	}
+
+	toUpdate.updateWeather(function(err,success){
+		if (err) {
+			callback(err);
+		} else {
+			callback(null,success);
+		}
+	});
+
+}
+
+module.exports.getAllWeather = (callback) => {
 	var data = [mke,mpls,chi,dal];
 	callback(null,data);
+}
+
+module.exports.getSingleWeather= (cityName, callback) => {
+	var toReturn = null;
+	switch (cityName) {
+		case 'Milwaukee':
+			toReturn = mke;
+			break;
+		case 'Minneapolis':
+			toReturn = mpls;
+			break;
+		case 'Chicago':
+			toReturn = chi;
+			break;
+		case 'Dallas':
+			toReturn = dal;
+			break;
+		default:
+			callback("No city found.");
+	}
+
+	callback(null, toReturn);
 }
 
 module.exports.storeAll = (callback) => {
