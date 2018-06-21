@@ -36,7 +36,7 @@
 									<h2 class="current-temp slds-text-heading_large slds-text-align_center slds-m-top_small"> {{main.temp}}&#8457;</h2> 
 									<div class="slds-grid slds-grid_align-space">
 									{{#each weather}}
-										<div class="slds-col slds-size_1-of-2 slds-max-small-size_1-of-1 slds-m-vertical_x-small">
+										<div class="slds-col slds-size_1-of-2 slds-m-vertical_x-small">
 											<div class="slds-m-around_x-small">
 												<div class="slds-text-align_center">
 													<img src='http://openweathermap.org/img/w/{{icon}}.png' alt='{{description}}'></img>
@@ -48,16 +48,16 @@
 									</div>
 								</div>
 						<!--/end NOW weather-->
-								<div class="slds-col slds-size_1-of-2 slds-grid slds-grid_vertical slds-border_right">
+								<div class="slds-col slds-size_1-of-2 slds-grid slds-grid_vertical">
 									<h2 class="slds-text-heading_large slds-text-align_center slds-border_bottom">TOMORROW</h2> 
-									<div class="slds-grid">
-										<div class="slds-col slds-size_1-of-2 slds-m-top_small"> 
+									<div class="high-low-grid slds-grid ">
+										<div class="high-low-val slds-col slds-size_1-of-2 slds-m-top_small"> 
 											<h2 class="slds-text-title_caps slds-text-align_center">high</h2>
 											<h2 class="slds-text-heading_large slds-text-align_center">
 												{{forecast.1.temp.max}}&#8457;
 											</h2>
 										</div> 
-										<div class="slds-col slds-size_1-of-2 slds-m-top_small"> 
+										<div class="high-low-val slds-col slds-size_1-of-2 slds-m-top_small"> 
 											<h2 class="slds-text-title_caps slds-text-align_center">low</h2>
 											<h2 class="slds-text-heading_large slds-text-align_center">
 												{{forecast.1.temp.min}}&#8457;
@@ -66,7 +66,7 @@
 									</div>
 									<div class="slds-grid slds-grid_align-space">
 									{{#each forecast.1.weather}}
-										<div class="slds-col slds-size_1-of-2 slds-max-small-size_1-of-1 slds-m-vertical_x-small">
+										<div class="slds-col slds-size_1-of-2 slds-m-vertical_x-small">
 											<div class="slds-m-around_x-small">
 												<div class="slds-text-align_center">
 													<img src='http://openweathermap.org/img/w/{{icon}}.png' alt='{{description}}'></img>

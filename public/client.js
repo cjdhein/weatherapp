@@ -20,5 +20,27 @@ $(document).ready( function(){
 			$('.display-container').replaceWith(data);	
 		});			
 	});
+
+	$(window).resize( function(){
+		if ($('.high-low-grid').width() < 250) {
+			if ($('.high-low-grid').hasClass('slds-grid_vertical')){
+				$('.high-low-val').removeClass('slds-size_1-of-2');
+				$('.high-low-val').addClass('slds-size_1-of-1');	
+			} else {
+				$('.high-low-grid').toggleClass('slds-grid_vertical');
+				$('.high-low-val').removeClass('slds-size_1-of-1');
+				$('.high-low-val').addClass('slds-size_1-of-2');
+			}
+		} else {
+			if ($('.high-low-grid').hasClass('slds-grid_vertical')){
+				$('.high-low-grid').toggleClass('slds-grid_vertical');
+				$('.high-low-val').removeClass('slds-size_1-of-2');
+				$('.high-low-val').addClass('slds-size_1-of-1');				
+			} else {
+				return;
+			}			
+		}
+	});
+
 });		
 
