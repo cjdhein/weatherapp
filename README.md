@@ -23,10 +23,11 @@ npm start
 *Note: App runs on localhost port 3000*
 
 ## Built With
-* [Salesforce Lightning Design System](http://www.lightningdesignsystem.com) - css framework
-* [Node.js](https://nodejs.org/) - backend
-* [Express](http://expressjs.com/) - web framework
-* [Express Handlebars](https://github.com/ericf/express-handlebars) - Express view engine
-* [jQuery](http://jquery.com/) - used in frontend scripting
+* [OpenWeatherMap](https://openweathermap.org/) - Free weather API
+* [Salesforce Lightning Design System](http://www.lightningdesignsystem.com) - CSS Framework
+* [Node.js](https://nodejs.org/) - Backend
+* [Express](http://expressjs.com/) - Web Framework
+* [Express Handlebars](https://github.com/ericf/express-handlebars) - Express View Engine
+* [jQuery](http://jquery.com/) - Frontend Scripting
 
 
