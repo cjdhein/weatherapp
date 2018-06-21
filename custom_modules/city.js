@@ -29,13 +29,7 @@ class City {
 		this.clouds = null;
 		this.forecast = [];
 		/* Trigger the initial pull / update of data on object creation */
-		this.update(function(err,success){
-			if (err) {
-				console.log(err);
-			} else {
-				console.log(success);
-			}
-		});
+		//this.update();
 
 	}
 
@@ -43,25 +37,36 @@ class City {
 	 * Update the current weather and forecast data for the city.
 	 * @param {requestCallback} callback - response handler
 	 */
-	update(callback){
+	update(){
+		return new Promise((resolve,reject) => {
+			console.log('3 city - Inside update for ' + this.cityId);
+			Weatherman.currentWeather(this.cityId)
+				.then((currentResult) => {
+					console.log('6 city - current retrieved');
+					this.cityName = currentResult.name;
+					this.weather = currentResult.weather;
+					this.main = currentResult.main;
+					this.visibility = currentResult.visibility;
+					this.wind = currentResult.wind;
+					this.clouds = currentResult.clouds;		
+				})
 
-		Weatherman.currentWeather(this.cityId).then((currentResult) => {
-			
-			this.cityName = currentResult.name;
-			this.weather = currentResult.weather;
-			this.main = currentResult.main;
-			this.visibility = currentResult.visibility;
-			this.wind = currentResult.wind;
-			this.clouds = currentResult.clouds;		
+				.then(() => {
+					return Weatherman.forecast(this.cityId)
+				})
+				
+				.then((forecastResult) => {
+					this.forecast = forecastResult;
+					console.log('9 forecast set');
+					return;
+				})
 
-//			return Promise.resolve();
-
-		}).then(Weatherman.forecast(this.cityId)
-			.then((forecastResult) => {
-				this.forecast = forecastResult;
-
-		}))
-			.catch((error)=>console.log(error));
+				.then(()=> {
+					resolve(true)
+				})
+				
+				.catch(error => console.error(error));
+		});
 	}	
 
 	/**

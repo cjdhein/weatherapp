@@ -19,14 +19,11 @@ app.use(bodyParser.json());
 
 app.get('/', (req,res,next) => {
 	console.log("loading...");
-	dataman.getAll((error,success) => {
-		if (error) {
-			console.log(error);
-		} else {
-			console.log(success);
-			res.render('home',{'cities':success});
-		}
-	});
+	dataman.getAll()
+		.then( (data) =>{
+			res.render('home', {'cities' : data});
+		})
+		.catch(error => console.error(error.message));
 });
 
 app.get('/log', (req,res,next) => {
@@ -41,16 +38,17 @@ app.get('/log', (req,res,next) => {
 });
 
 app.get('/refresh', (req,res,next) => {
-	var toUpdate = req.query.city;
-	console.log('Updating ' + toUpdate);
-	dataman.updateSingle(toUpdate, (error,success) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.redirect('/');
-		}
 
-	});
+	// Obtain city we are updating
+	var toUpdate = req.query.city;
+	
+	console.log('1 app - Updating ' + toUpdate);
+	
+	dataman.updateSingle(toUpdate)
+		.then(() => {
+			res.redirect('/');
+		})
+		.catch(error => console.error(error));
 });
 
 app.listen(3000, () => {

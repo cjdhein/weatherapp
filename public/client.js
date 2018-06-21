@@ -12,8 +12,13 @@ $(document).ready( function(){
 	/* Register event listeners for buttons */
 
 	$('.refresh-button').click(function(){
-		$.get('/refresh',{city: this.id}, function(data){
+		$.ajax({
+			url:'/refresh',
+			data: {city: this.id}, 
+			async: true
+		}).done((data) => {
 			$('.display-container').replaceWith(data);	
-		});
-	});	
-});
+		});			
+	});
+});		
+

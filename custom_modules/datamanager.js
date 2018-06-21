@@ -21,9 +21,9 @@ var cities = {};
 */
 
 cities['5263045']= new City(5263045);
-//cities['4275586'] = new City(4275586);
-//cities['3582383']= new City(3582383);
-//cities['4684888']= new City(4684888);
+cities['4275586'] = new City(4275586);
+cities['3582383']= new City(3582383);
+cities['4684888']= new City(4684888);
 
 
 /* Triggers the updating of each city.
@@ -73,18 +73,23 @@ module.exports.updateAll = (callback) => {
 	}
 }
 
-module.exports.updateSingle = (cityId, callback) => {
+module.exports.updateSingle = (cityId) => {
 	return new Promise((resolve,reject) => {
-		cities[cityId].update().then(() => {
-				resolve(true);
-			}).catch(reject(err));
+		console.log('2 dataman - calling udpateSingle');
+		cities[cityId].update()
+
+			 .then(() => {
+			 	resolve(true)
+			 })
+			 .catch(error => console.error(error));
 		});
 
 }
 
-module.exports.getAll = (callback) => {
-	var data = cities;
-	callback(null,data);
+module.exports.getAll = () => {
+	return new Promise((resolve,reject) => {
+		resolve(cities);
+	});
 }
 
 module.exports.storeAll = (callback) => {

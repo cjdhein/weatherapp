@@ -20,16 +20,14 @@ module.exports.currentWeather = function(cityID) {
 
 	return new Promise((resolve,reject) => {
 		var call = 'weather?id=' + cityID + '&units=imperial' + apiKey;
-	
-		//console.log('Calling ' + callUrl);
-
+		console.log('4 weatherman - Calling current');
 		ax.get(call)
 		.then(function(response){
-			//console.log(JSON.stringify(response.data,null,2));
+			console.log('5 weatherman - resolving current');
 			resolve(response.data);
 		})
 		.catch(function(error){
-			reject(error); return;
+			reject(error);
 		});
 	});
 }
@@ -38,11 +36,12 @@ module.exports.forecast = function(cityID) {
 
 	return new Promise((resolve,reject) => {
 		var call = 'forecast/daily?id=' + cityID + '&units=imperial' + apiKey;
-	
-		//console.log('Calling ' + callUrl);
+		
+		console.log('7  weatherman - Calling forecast');
 
 		ax.get(call)
 		.then(function(response){
+			console.log('8 weatherman - resolving forecast');
 			resolve(response.data);
 		})
 		.catch(function(error) {
