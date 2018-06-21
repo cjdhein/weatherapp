@@ -17,7 +17,7 @@ const Weatherman = require('./weatherman.js');
 class City {
 	/**
 	 * Create a city.
-	 * @param {number} id - The OpenWeatherMap API id associated with the city.
+	 * parameter: "value",  {number} id - The OpenWeatherMap API id associated with the city.
 	 */
 	constructor(id){
 		this.cityId = id;
@@ -28,8 +28,9 @@ class City {
 		this.wind = null;
 		this.clouds = null;
 		this.forecast = [];
+		
 		/* Trigger the initial pull / update of data on object creation */
-		//this.update();
+		this.update();
 
 	}
 
@@ -56,7 +57,7 @@ class City {
 				})
 				
 				.then((forecastResult) => {
-					this.forecast = forecastResult;
+					this.forecast = forecastResult.list;
 					console.log('9 forecast set');
 					return;
 				})

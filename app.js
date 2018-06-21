@@ -27,14 +27,11 @@ app.get('/', (req,res,next) => {
 });
 
 app.get('/log', (req,res,next) => {
-	dataman.getAll((error,success) => {
-		if (error) {
-			console.log(error);
-		} else {
-			res.send(success);
-		}
-	});
-
+	dataman.getAll()
+		.then( (data) => {
+			res.send(data);
+		})
+		.catch(error => console.error(error.message));
 });
 
 app.get('/refresh', (req,res,next) => {
