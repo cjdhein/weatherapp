@@ -1,106 +1,94 @@
+/*****************************************************************************************************
+ *
+ * Name:	datamanager.js
+ *
+ * Desc:	This module holds the instantiated city objects and has methods to trigger the city
+ *			objects to update their data and also to return themselves to a caller.
+ *
+ *****************************************************************************************************/
+
+
+
 /* To create the cities */
-var City = require('./city.js');
-var fs = require('fs');
+const City = require('./city.js');
 
-/* Functions as a dictionary and holds all city objects as the value, under the cityId key */
-var cities = {};
+/* Used as a dictionary to hold all city objects as the value, under the cityId key */
+var cityHolder = {};
 
+// Add and instantiate each city
+cityHolder['5263045']= new City(5263045);	// Milwaukee
+cityHolder['4275586'] = new City(4275586);	// Minneapolis
+cityHolder['3582383']= new City(3582383);	// Chicago
+cityHolder['4684888']= new City(4684888);	// Dallas
 
-/* Create object for each pertinent city */
-/*fs.readFile('./raw','utf8',function(err,success){
-	if (err) {
-		console.log(err);
-	} else {
-		success = JSON.parse(success);
-		cities['5263045'] = success[0]; 
-		cities['4275586'] = success[1];
-		cities['3582383'] = success[2];
-		cities['4684888'] = success[3];
-	}
-});
-*/
-
-cities['5263045']= new City(5263045);
-cities['4275586'] = new City(4275586);
-cities['3582383']= new City(3582383);
-cities['4684888']= new City(4684888);
-
-
-/* Triggers the updating of each city.
- * @param callback - a callback function that will return
- *			(err, success).
+/* Method:	updateSingle	
+ * Desc:	Updates the weather and forecast data for the specified city.
+ * Params:	cityId - the key the city is held in cityHolder as. This also
+ *			represents the unique OpenWeatherMap API id for the city.
+ *
+ * Pre:		There is a city in cityHolder under the cityId key.
+ * Post:	The specified city will have had its data updated.
  */ 
-module.exports.updateAll = (callback) => {
-
-	/* Will hold a response object for each call to updateSingle
-	 * goodUpdate - boolean value indicating of error occured
-	 * errMsg - string if there was an error, otherwise null
-	 */
-	var responses = [];
-
-	/* Call updateSingle for each city and append callbacks to responses */
-	for (var i = 0; i < cities.length; i++) {
-		updateSingle(cities[i],function(err,success){
-			if (err) {
-				// Error occurred for this city
-				response.append({goodUpdate : false, errMsg : err});
-			} else {
-				// Update was successful for this city
-				response.append({goodUpdate : success, errMsg : null});
-			}
-		});
-	}
-	
-	/* If there were errors in updating the cities, append error messages for single callback,
-	 * and set allGood = false */
-	var allGood = true;
-
-	// hold appended error messages
-	var callbackError = null;
-
-	// check responses
-	for (var i = 0; i < responses.length; i++) {
-		if (!responses[i].goodUpdate){
-			callbackError += res.errMsg + '; ';		
-		}
-	}
-	
-	// if overall request was successful, send callback with success flag, otherwise send error
-	if (allGood) {
-		callback(null,true);
-	} else {
-		callback(callbackError);
-	}
-}
-
 module.exports.updateSingle = (cityId) => {
 	return new Promise((resolve,reject) => {
-		console.log('2 dataman - calling udpateSingle');
-		cities[cityId].update()
+		// Call update on the city
+		cityHolder[cityId].update()
 
-			 .then(() => {
-			 	resolve(true)
-			 })
-			 .catch(error => console.error(error));
+			// resolve promise
+			.then(() => {
+				resolve(true)
+			})
+
+			.catch( (error) => {
+				reject(error);
+		 });
+	});
+
+}
+
+/* Method:	updateAll	
+ * Desc:	Updates the weather and forecast data for all cities in cityHolder.
+ * Params:	None.
+ *
+ * Pre:		cityHolder has instantiated city objects held as values.
+ * Post:	All cities in cityHolder will have had their data updated.
+ */ 
+module.exports.updateAll = () => {
+	return new Promise((resolve,reject) => {
+		
+		// obtain the keys (cityIds) for each city
+		var keys = Object.keys(cityHolder);
+		
+		// hold all the promises from update calls to ensure all updates have resolved
+		var allPromises = [];
+
+		// call updateSingle for each city and add the response to allPromises
+		for (var i = 0; i < keys.length; i++) {
+			allPromises.push(module.exports.updateSingle(keys[i]));
+		}
+
+		// Once all promises have been returned, resolve this method's promise
+		Promise.all(allPromises)
+			.then( () => {
+				resolve(true);
+			})
+			.catch( (error) => {
+				reject(error);
 		});
 
+	});
 }
 
+/* Method:	getAll	
+ * Desc:	Returns all cities held in cityHolder so their data can be used.	
+ * Params:	None.	
+ *
+ * Pre:		cityHolder has instantiated city objects held as values, otherwise an empty object is returned.		
+ * Post:	The cityHolder object will have been returned to the caller.
+ */ 
 module.exports.getAll = () => {
 	return new Promise((resolve,reject) => {
-		resolve(cities);
+		resolve(cityHolder);
 	});
 }
 
-module.exports.storeAll = (callback) => {
-
-	var data = [mke,mpls,chi,dal];
-	data = JSON.stringify(data,null,2);
-	fs.writeFile("./raw",data, function(err,success){
-		if(err){
-			callback(new Error(err));
-		} else {
-			callback(null,'written');
-		}
-	});
-}

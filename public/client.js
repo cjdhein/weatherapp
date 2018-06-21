@@ -1,46 +1,65 @@
+/* Checks the pixel width of the temp grid and returns 
+ * whether it should be vertical or horizontal
+ */
+function checkForecastSize() {
+		
+	if ($('.temp-grid').width() < 250) {
+		return 'vertical';
+	} else {
+		return 'horizontal';
+	}
+	
+}
 
-
-function loadCities() {
-
-	$.get('/log', function(data){
-		console.log(data);
-	});
+/* Switches css classes to keep best appearance for the current size */
+function responsiveForecast(){
+	switch (checkForecastSize()){
+		case 'vertical':
+			$('.temp-grid').removeClass('slds-grid_vertical').addClass('slds-grid_vertical');
+			$('.temp-val').removeClass('slds-size_1-of-2').addClass('slds-size_1-of-1');	
+			break;
+		case 'horizontal':
+			$('.temp-grid').removeClass('slds-grid_vertical');
+			$('.temp-val').removeClass('slds-size_1-of-1').addClass('slds-size_1-of-2');	
+			break;
+		default:
+			console.error('checkForecastSize is returning invalid response');
+	}		
 }
 
 $(document).ready( function(){
-	loadCities();
-	/* Register event listeners for buttons */
 
+	/* Ensure forecast side is properly sized at start */
+	responsiveForecast();
+
+	/* Register event listeners for refresh buttons */
 	$('.refresh-button').click(function(){
+
+		// Perform ajax call to server to trigger refresh and get the updated view
 		$.ajax({
 			url:'/refresh',
-			data: {city: this.id}, 
-			async: true
+			data: {city: this.id} 
+		}).done((data) => {
+			$('.display-container').replaceWith(data);	
+		});			
+	});
+	/* Register event listeners for refresh buttons */
+	$('#refreshall').click(function(){
+
+		// Perform ajax call to server to trigger refresh and get the updated view
+		$.ajax({
+			url:'/refreshall',
+			data: {city: this.id} 
 		}).done((data) => {
 			$('.display-container').replaceWith(data);	
 		});			
 	});
 
-	$(window).resize( function(){
-		if ($('.high-low-grid').width() < 250) {
-			if ($('.high-low-grid').hasClass('slds-grid_vertical')){
-				$('.high-low-val').removeClass('slds-size_1-of-2');
-				$('.high-low-val').addClass('slds-size_1-of-1');	
-			} else {
-				$('.high-low-grid').toggleClass('slds-grid_vertical');
-				$('.high-low-val').removeClass('slds-size_1-of-1');
-				$('.high-low-val').addClass('slds-size_1-of-2');
-			}
-		} else {
-			if ($('.high-low-grid').hasClass('slds-grid_vertical')){
-				$('.high-low-grid').toggleClass('slds-grid_vertical');
-				$('.high-low-val').removeClass('slds-size_1-of-2');
-				$('.high-low-val').addClass('slds-size_1-of-1');				
-			} else {
-				return;
-			}			
-		}
-	});
 
+
+	/* Ensure forecast side is more responsive on window resize*/
+	$(window).resize( function(){
+		responsiveForecast();
+	});
 });		
 
